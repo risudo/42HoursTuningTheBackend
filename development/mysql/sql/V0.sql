@@ -29,7 +29,6 @@ CREATE TABLE `record` (
     `created_by` bigint NOT NULL,
     `created_at` TIMESTAMP NOT NULL,
     `updated_at` TIMESTAMP NOT NULL,
-    INDEX (`category_id`, `application_group`) USING HASH,
     PRIMARY KEY (`record_id`)
 );
 
@@ -39,7 +38,6 @@ CREATE TABLE `record_item_file` (
     `linked_file_id` VARCHAR(64) NOT NULL,
     `linked_thumbnail_file_id` VARCHAR(64) NOT NULL,
     `created_at` TIMESTAMP NOT NULL,
-    INDEX (`linked_record_id`) USING HASH,
     PRIMARY KEY (`item_id`)
 );
 
@@ -56,7 +54,6 @@ CREATE TABLE `record_comment` (
     `value` VARCHAR(512) NOT NULL,
     `created_by` bigint NOT NULL,
     `created_at` TIMESTAMP NOT NULL,
-    INDEX (`linked_record_id`) USING HASH,
     PRIMARY KEY (`comment_id`)
 );
 
@@ -78,7 +75,6 @@ CREATE TABLE `session` (
     `value` VARCHAR(256) NOT NULL,
     `linked_user_id` bigint NOT NULL,
     `created_at` TIMESTAMP NOT NULL,
-    INDEX (`value`) USING HASH,
     PRIMARY KEY (`session_id`)
 );
 
