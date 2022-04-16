@@ -13,7 +13,8 @@ services:
             protocol: tcp
       volumes:
         - /da/tls:/etc/nginx/tls
-        - /nginx_log:/volume_dir
+        - ../volume/nginx:/volume_dir
+
     backend:
       init: true
       build:
