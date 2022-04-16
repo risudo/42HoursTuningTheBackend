@@ -32,7 +32,7 @@ const mylog = (obj) => {
 const getLinkedUser = async (headers) => {
   const target = headers['x-app-key'];
   mylog(target);
-  const qs = `select * from session where value = ?`;
+  const qs = `select linked_user_id from session where value = ?`;
 
   const [rows] = await pool.query(qs, [`${target}`]);
 
@@ -233,18 +233,12 @@ const tomeActive = async (req, res) => {
     limit = 10;
   }
 
-  const searchMyGroupQs = `select * from group_member where user_id = ?`;
-  const [myGroupResult] = await pool.query(searchMyGroupQs, [user.user_id]);
-  mylog(myGroupResult);
 
   const targetCategoryAppGroupList = [];
-  const searchTargetQs = `select * from category_group where group_id = ?`;
+  const searchTargetQs =
+    `select * from category_group join group_member on category_group.group_id = group_member.group_id where user_id = ?`;
 
-  for (let i = 0; i < myGroupResult.length; i++) {
-    const groupId = myGroupResult[i].group_id;
-    mylog(groupId);
-
-    const [targetResult] = await pool.query(searchTargetQs, [groupId]);
+    const [targetResult] = await pool.query(searchTargetQs, [user.user_id]);
     for (let j = 0; j < targetResult.length; j++) {
       const targetLine = targetResult[j];
       mylog(targetLine);
@@ -254,7 +248,6 @@ const tomeActive = async (req, res) => {
         applicationGroup: targetLine.application_group,
       });
     }
-  }
 
   let searchRecordQs =
     'select * from record where status = "open" and (category_id, application_group) in (';
